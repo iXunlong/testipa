@@ -1,0 +1,151 @@
+#!/bin/bash
+# by michael 20191030
+#
+#根据一定的配置，动态的生成一些HTML页面
+#by michael 20191030
+localPath="https://github.com/iXunlong/testipa/raw/master/ipaDownloadServer/"
+if [[ -d ./ipaDownloadServer ]]; then
+	cd ./ipaDownloadServer
+	mouthDir=$(ls -l ./ |awk '/^d/ {print $NF}')
+else
+	echo "发生错误，即将退出"
+	exit
+fi
+
+for mouth in $mouthDir; do
+	cd ./${mouth}
+	pwd
+	dayDir=$(ls -l ./ |awk '/^d/ {print $NF}')
+
+	for day in $dayDir; do
+		cd ./${day}
+		pwd
+		ipaDir=$(find . -iname '*.plist' -print)
+		
+		if [[ -f ./download.html ]]; then
+			sudo rm ./download.html
+		fi
+		sudo touch ./download.html
+		sudo chmod 777 ./download.html
+
+#创建实际的下载页面
+		cat > ./download.html << END_TEXT
+		<!DOCTYPE html>
+		<html ng-app="guarantee">
+		<head >
+		    <meta charset="utf-8">
+		    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		    <title>酷球ipa在线安装 - ${mouth} - ${day} </title>
+		</head>
+		<body>
+
+		<p> - <b>第一次安装的都请先点击下方链接进行证书安装，安装过的忽略：⤵️️</b>。</p>
+		<a style="display: block;width: 100%;height: 100px;" href="https://192.168.12.190/ca.crt" target="self">点击安装https服务信任证书</a>
+
+		<p> - <b>点击相应链接进行安装: </b></p>
+END_TEXT
+
+		for ipa in $ipaDir; do
+			showName=${ipa%.*}
+			showName="点击下载: ${showName#*/}"
+			echo "showName is ${showName}"
+			cat >> ./download.html << END_TEXT
+			<a style="display: block;width: 100%;height: 60px;" 
+			href="itms-services:///?action=download-manifest&url=${localPath}${mouth}/${day}/${ipa}" 
+			>
+			${showName}</a>
+			<br>
+END_TEXT
+
+		done
+
+	cat >> ./download.html << END_TEXT
+	<br>
+	</body>
+END_TEXT
+
+#day 循环结束 ， ipa下载详情页完成
+	cd ../
+	done
+
+	#创建日期选择页, 指向各个download.html
+	if [[ -f ./subIndex.html ]]; then
+		sudo rm ./subIndex.html
+	fi
+
+	sudo touch ./subIndex.html
+	sudo chmod 777 ./subIndex.html
+
+	cat > ./subIndex.html << END_TEXT
+<!DOCTYPE html>
+<html ng-app="guarantee">
+<head >
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>酷球ipa在线安装 - ${mouth} 日期选择</title>
+</head>
+<body>
+
+<p> - <b>第一次安装的都请先点击下方链接进行证书安装，安装过的忽略：⤵️️</b>。</p>
+<a style="display: block;width: 100%;height: 100px;" href="https://192.168.12.190/ca.crt">点击安装https服务信任证书</a>
+
+<p> - <b>请选择日期: </b>。</p>
+END_TEXT
+
+	for day in $dayDir; do
+		cat >> ./subIndex.html << END_TEXT
+<a style="display: block;width: 100%;height: 60px;" 
+href="${localPath}${mouth}/${day}/download.html">
+${day}日安装包</a>
+<br>
+END_TEXT
+	done
+cat >> ./subIndex.html << END_TEXT
+
+<br>
+</body>
+END_TEXT
+#mouth循环结束，日期选择页创建完毕
+cd ../
+done
+
+cd ../
+if [[ -f ./index.html ]]; then
+    sudo rm ./index.html
+fi
+
+sudo touch ./index.html
+sudo chmod 777 ./index.html
+
+cat > ./index.html << END_TEXT
+<!DOCTYPE html>
+<html ng-app="guarantee">
+<head >
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>酷球ipa在线安装</title>
+</head>
+<body>
+
+<p> - <b>第一次安装的都请先点击下方链接进行证书安装，安装过的忽略：⤵️️</b>。</p>
+<a style="display: block;width: 100%;height: 100px;" href="https://192.168.12.190/ca.crt">点击安装https服务信任证书</a>
+END_TEXT
+
+for mouth in $mouthDir; do
+	cat >> ./index.html << END_TEXT
+<a style="display: block;width: 100%;height: 60px;" 
+href="${localPath}${mouth}/subIndex.html">
+进入${mouth}月</a>
+<br>
+END_TEXT
+done
+
+cat >> ./index.html << END_TEXT
+<br>
+</body>
+END_TEXT
+
+
+
+
+
