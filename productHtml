@@ -3,7 +3,7 @@
 #
 #根据一定的配置，动态的生成一些HTML页面
 #by michael 20191030
-localPath="https://github.com/iXunlong/testipa/raw/master/ipaDownloadServer/"
+localPath="https://ixunlong.github.io/testipa/ipaDownloadServer/"
 if [[ -d ./ipaDownloadServer ]]; then
 	cd ./ipaDownloadServer
 	mouthDir=$(ls -l ./ |awk '/^d/ {print $NF}')
