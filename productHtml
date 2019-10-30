@@ -4,6 +4,7 @@
 #根据一定的配置，动态的生成一些HTML页面
 #by michael 20191030
 localPath="https://ixunlong.github.io/testipa/ipaDownloadServer/"
+plistPath="https://raw.githubusercontent.com/iXunlong/testipa/master/ipaDownloadServer/"
 if [[ -d ./ipaDownloadServer ]]; then
 	cd ./ipaDownloadServer
 	mouthDir=$(ls -l ./ |awk '/^d/ {print $NF}')
@@ -51,7 +52,7 @@ END_TEXT
 			echo "showName is ${showName}"
 			cat >> ./download.html << END_TEXT
 			<a style="display: block;width: 100%;height: 60px;" 
-			href="itms-services:///?action=download-manifest&url=${localPath}${mouth}/${day}/${ipa}" 
+			href="itms-services:///?action=download-manifest&url=${plistPath}${mouth}/${day}/${ipa}" 
 			>
 			${showName}</a>
 			<br>
