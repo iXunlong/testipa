@@ -3,6 +3,7 @@
 #
 #根据一定的配置，动态的生成一些HTML页面
 #by michael 20191030
+#update hongdou 20220302
 localPath="https://ixunlong.github.io/testipa/ipaDownloadServer/"
 plistPath="https://raw.githubusercontent.com/iXunlong/testipa/master/ipaDownloadServer/"
 if [[ -d ./ipaDownloadServer ]]; then
@@ -36,12 +37,9 @@ for mouth in $mouthDir; do
 		<head >
 		    <meta charset="utf-8">
 		    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-		    <title>酷球ipa在线安装 - ${mouth} - ${day} </title>
+		    <title>ipa在线安装 - ${mouth} - ${day} </title>
 		</head>
 		<body>
-
-		<p> - <b>第一次安装的都请先点击下方链接进行证书安装，安装过的忽略：⤵️️</b>。</p>
-		<a style="display: block;width: 100%;height: 100px;" href="https://192.168.12.190/ca.crt" target="self">点击安装https服务信任证书</a>
 
 		<p> - <b>点击相应链接进行安装: </b></p>
 END_TEXT
@@ -83,12 +81,9 @@ END_TEXT
 <head >
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title>酷球ipa在线安装 - ${mouth} 日期选择</title>
+    <title>ipa在线安装 - ${mouth} 日期选择</title>
 </head>
 <body>
-
-<p> - <b>第一次安装的都请先点击下方链接进行证书安装，安装过的忽略：⤵️️</b>。</p>
-<a style="display: block;width: 100%;height: 100px;" href="https://192.168.12.190/ca.crt">点击安装https服务信任证书</a>
 
 <p> - <b>请选择日期: </b>。</p>
 END_TEXT
@@ -124,12 +119,10 @@ cat > ./index.html << END_TEXT
 <head >
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title>酷球ipa在线安装</title>
+    <title>ipa在线安装</title>
 </head>
 <body>
 
-<p> - <b>第一次安装的都请先点击下方链接进行证书安装，安装过的忽略：⤵️️</b>。</p>
-<a style="display: block;width: 100%;height: 100px;" href="https://192.168.12.190/ca.crt">点击安装https服务信任证书</a>
 END_TEXT
 
 for mouth in $mouthDir; do
